@@ -1,0 +1,276 @@
+@import "@fortawesome/fontawesome-free/css/all.css";
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");
+
+$primary-color: rgb(68, 202, 202);
+$secondary-color: rgb(44, 150, 150);
+$third-color: rgb(165, 252, 252);
+$border: 1px solid lightgrey;
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+#app {
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 30px 80px;
+  background-color: $secondary-color;
+  position: fixed;
+  color: white;
+  @media screen and (max-width: 635px) {
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+  }
+  h1 {
+    margin: 0;
+  }
+  > div {
+    > div {
+      transition: all 0.3s;
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+  .vaccins-approuves {
+    margin-left: 15px;
+    cursor: pointer;
+  }
+}
+main {
+  padding: 115px 60px 75px 60px;
+  display: flex;
+  flex-wrap: wrap;
+  @media screen and (max-width: 500px) {
+    padding: 115px 15px;
+  }
+  .vaccin-card {
+    width: 33.33%;
+    padding: 0 7px;
+    display: flex;
+    flex-grow: 1;
+    margin-bottom: 15px;
+    @media screen and (max-width: 992px) {
+      width: 50%;
+    }
+    @media screen and (max-width: 730px) {
+      width: 100%;
+    }
+    > div {
+      border: $border;
+      display: flex;
+      flex-direction: column;
+      .vaccin-picture {
+        width: 100%;
+        height: 145px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @media screen and (max-width: 730px) {
+          height: 300px;
+        }
+        @media screen and (max-width: 700px) {
+          height: 250px;
+        }
+        @media screen and (max-width: 600px) {
+          height: 200px;
+        }
+        @media screen and (max-width: 500px) {
+          height: 150px;
+        }
+        > img {
+          max-height: auto;
+          width: 100%;
+        }
+      }
+      .infos {
+        width: 100%;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        h3 {
+          text-align: center;
+          margin-top: 0;
+        }
+        p {
+          margin-top: 0;
+        }
+        .prix {
+          width: 100%;
+          display: flex;
+          align-items: flex-end;
+          justify-content: flex-end;
+          flex-grow: 1;
+          color: $secondary-color;
+        }
+      }
+      .reservation {
+        input {
+          border: none;
+          padding: 7px;
+          border: $border;
+          display: flex;
+          flex-grow: 1;
+          border-right: none;
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+}
+footer {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 20px 80px;
+  background-color: $primary-color;
+  @media screen and (max-width: 635px) {
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+    align-items: center;
+  }
+  button {
+    display: inline-flex;
+    background-color: white;
+    color: $primary-color;
+  }
+  .prix {
+    margin: 0;
+    padding-top: 10px;
+    @media screen and (max-width: 635px) {
+      margin-bottom: 10px;
+    }
+  }
+  .vider {
+    margin-right: 15px;
+  }
+  i {
+    position: relative;
+    font-size: 32px;
+    margin-right: 15px;
+    cursor: pointer;
+    @media screen and (max-width: 635px) {
+      margin-bottom: 10px;
+    }
+    span {
+      font-size: 20px;
+      position: absolute;
+      color: white;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+    }
+  }
+  .panier {
+    position: absolute;
+    height: auto;
+    width: 300px;
+    bottom: 72px;
+    background-color: $secondary-color;
+    color: white;
+    left: 60px;
+    display: none;
+    padding: 15px 20px;
+    @media screen and (max-width: 635px) {
+      bottom: 104px;
+      width: 100%;
+      left: 0;
+    }
+    &.d-block {
+      display: block;
+      transition: all 0.3s;
+    }
+  }
+}
+.d-flex {
+  display: flex;
+}
+.bold {
+  font-weight: 700;
+}
+.jc-between {
+  width: 100%;
+  justify-content: space-between;
+}
+.ai-center {
+  align-items: center;
+}
+button {
+  padding: 7px 15px;
+  background-color: $primary-color;
+  color: white;
+  cursor: pointer;
+  border: solid 1px $primary-color;
+  transition: all 0.3s;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    background-color: $secondary-color;
+    color: white;
+  }
+  &:disabled,
+  &[disabled] {
+    border: $border;
+    background-color: #cccccc;
+    color: #666666;
+  }
+}
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: $third-color;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $secondary-color;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $primary-color;
+}
+.commande-acceptee {
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  background-color: $primary-color;
+
+  > div {
+    padding: 60px;
+    border: $border;
+    flex-direction: column;
+    background-color: $secondary-color;
+    color: white;
+  }
+}
+.classer-prix {
+  cursor: pointer;
+  &.active {
+    text-decoration: underline;
+    color: $third-color;
+  }
+}
