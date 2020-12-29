@@ -2,9 +2,7 @@ import './styles.scss';
 import { vaccins } from './src/data';
 
 const h = window.innerHeight;
-const style = document.createElement('style');
-document.head.appendChild(style);
-style.sheet.insertRule(`body {height: ${h}px}`);
+document.body.style.height = `${h}px`;
 
 const app = document.getElementById('app');
 // creation du header
@@ -35,21 +33,17 @@ const footer = `
 app.innerHTML += footer;
 
 // tableau pour checker si le vaccin a déjà été réservé
-const isDisabled = [];
-vaccins.forEach(() => {
-  isDisabled.push(false);
-});
+const vaccinsData = vaccins.map((vaccin) => ({ ...vaccin, isDisabled: false }));
 
 // fonction render pour remplir le main
 const render = (arr, container) => {
   container.innerHTML = ' ';
   arr.forEach((elt, i) => {
     const {
-      nom, inventeurs, production, technologie, quantité, prix,
+      nom, inventeurs, production, technologie, quantité, prix, isDisabled,
     } = elt;
-    const idxVaccin = vaccins.findIndex((x) => nom === x.nom);
     let picture = (nom).toLowerCase();
-    const btnDisabled = isDisabled[idxVaccin] === true ? 'disabled' : '';
+    const btnDisabled = isDisabled ? 'disabled' : '';
     picture = picture.includes('.') ? picture.replaceAll('.', '-') : picture.replaceAll(' ', '-');
     container.innerHTML += `
                       <div id="vaccin-${i}" class="vaccin-card">
@@ -74,7 +68,7 @@ const render = (arr, container) => {
   });
 };
 const mainContainer = document.querySelector('.container');
-render(vaccins, mainContainer);
+render(vaccinsData, mainContainer);
 
 const vaccinsApprouves = document.querySelector('.vaccins-approuves');
 const parPrix = document.querySelector('.classer-prix');
@@ -82,15 +76,17 @@ const parPrix = document.querySelector('.classer-prix');
 const toSortBy = () => {
   let triParPrix;
   if (parPrix.classList.contains('active')) {
-    const sortByMapped = (map, compareFn) => (a, b) => compareFn(map(a), map(b));
-    const byValue = (a, b) => a - b;
-    const toPrice = (e) => e.prix;
-    const byPrice = sortByMapped(toPrice, byValue);
-    triParPrix = vaccins.sort(byPrice);
+    // const sortByMapped = (map, compareFn) => (a, b) => compareFn(map(a), map(b));
+    // const byValue = (a, b) => a - b;
+    // const toPrice = (e) => e.prix;
+    // const byPrice = sortByMapped(toPrice, byValue);
+    // triParPrix = vaccinsData.sort(byPrice);
+    const byPrice = (a, b) => a.prix - b.prix;
+    triParPrix = vaccinsData.sort(byPrice);
   } else {
-    triParPrix = vaccins;
+    triParPrix = vaccinsData;
   }
-  const approuves = triParPrix.filter((x) => x.approuvé === true);
+  const approuves = triParPrix.filter((x) => x.approuvé);
   const vaccinsShowed = vaccinsApprouves.innerHTML === 'Tous les vaccins' ? approuves : triParPrix;
   render(vaccinsShowed, mainContainer);
 };
@@ -148,16 +144,15 @@ body.addEventListener('click', (e) => {
     const ipt = btn.previousElementSibling;
     // S'il y a une certaine quantité
     if (ipt.value !== '0') {
-      const vaccinId = vaccins.findIndex((x) => btn.closest('.infos').querySelector('h3').innerHTML === x.nom);
-      const oneVaccin = `<li class="d-flex jc-between ai-center"><span>${vaccins[vaccinId].nom} x${ipt.value}</span> <span>${parseInt(ipt.value, 10) * parseFloat(vaccins[vaccinId].prix)}$</li>`;
+      const vaccinId = vaccinsData.findIndex((x) => btn.closest('.infos').querySelector('h3').innerHTML === x.nom);
+      const oneVaccin = `<li class="d-flex jc-between ai-center"><span>${vaccinsData[vaccinId].nom} x${ipt.value}</span> <span>${parseInt(ipt.value, 10) * parseFloat(vaccinsData[vaccinId].prix)}$</li>`;
       panier.innerHTML = panier.innerHTML === 'Votre panier est vide' ? oneVaccin : panier.innerHTML + oneVaccin;
       panierQuantite.innerHTML = parseInt(panierQuantite.innerHTML, 10) + parseInt(ipt.value, 10);
-      prixTotal.innerHTML = parseFloat(prixTotal.innerHTML) + (parseInt(ipt.value, 10) * parseFloat(vaccins[vaccinId].prix));
+      prixTotal.innerHTML = parseFloat(prixTotal.innerHTML) + (parseInt(ipt.value, 10) * parseFloat(vaccinsData[vaccinId].prix));
       ipt.value = 0;
       //   On ne peut plus réserver ce vaccin
       btn.setAttribute('disabled', 'disabled');
-      isDisabled[vaccinId] = true;
-      console.log(isDisabled);
+      vaccinsData[vaccinId].isDisabled = true;
       //   on peut passer la commande totale
       commander.removeAttribute('disabled');
     }
